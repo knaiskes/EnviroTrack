@@ -12,6 +12,7 @@ const char* password = "";
 const char* mqtt_server = "";
 const char* mqtt_user = "";
 const char* mqtt_password = "";
+const char* topic = "sensors/dht22/measurements";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -37,6 +38,6 @@ void loop() {
     return;
   }
   String dht22Measurements = String(humidity) + "," + String(temperature);
-  client.publish("sensors/dht22/measurements", dht22Measurements.c_str());
+  client.publish(topic, dht22Measurements.c_str());
   delay(3000);
 }
