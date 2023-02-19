@@ -9,8 +9,8 @@ services:
       - 9001:9001
     restart: always
     volumes:
-      - ./config/:/mosquitto/config/:rw
-      - ./log/:/mosquitto/log/
+      - ./mosquitto/config/:/mosquitto/config/:rw
+      - ./mosquitto/log/:/mosquitto/log/
       - data:/mosquitto/data/
     depends_on:
       - db
