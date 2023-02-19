@@ -17,8 +17,10 @@ services:
 
   db:
     container_name: db
+    restart: always
     image: postgres:15
     volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
@@ -31,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       - mqtt
       - db

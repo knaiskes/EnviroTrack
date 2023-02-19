@@ -2,17 +2,17 @@ import paho.mqtt.client as mqtt
 from datetime import datetime
 import psycopg2
 
-MQTT_BROKER_ADDRESS = ''
+MQTT_BROKER_ADDRESS = 'mqtt'
 MQTT_BROKER_PORT = 1883
-MQTT_USERNAME = ''
-MQTT_PASSWORD = ''
+MQTT_USERNAME = 'test'
+MQTT_PASSWORD = 'test'
 MQTT_TOPIC = 'sensor/dht22/measurements'
 
-POSTGRES_HOST = ''
+POSTGRES_HOST = 'db'
 POSTGRES_PORT = 5432
-POSTGRES_DBNAME = ''
-POSTGRES_USERNAME = ''
-POSTGRES_PASSWORD = ''
+POSTGRES_DBNAME = 'measurements'
+POSTGRES_USERNAME = 'postgres'
+POSTGRES_PASSWORD = 'postgres'
 
 conn = psycopg2.connect(
     host=POSTGRES_HOST,
@@ -27,7 +27,7 @@ def on_message(client, userdata, message):
     timestamp = datetime.now()
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO measurements (timestamp, payload) VALUES (%s, %s)',
+        'INSERT INTO dht22 (timestamp, payload) VALUES (%s, %s)',
         (timestamp, payload)
     )
     conn.commit()
