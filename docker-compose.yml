@@ -16,15 +16,24 @@ services:
       - db
 
   db:
+    container_name: db
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=measurements
     ports:
       - "5432:5432"
+
+  script:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mqtt
+      - db
 
 volumes:
   data:
