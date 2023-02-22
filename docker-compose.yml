@@ -38,6 +38,24 @@ services:
       - mqtt
       - db
 
+  grafana:
+    image: grafana/grafana
+    user: "$UID:$GID"
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: db
+      GF_DATABASE_NAME: measurements
+      GF_DATABASE_USER: postgres
+      GF_DATABASE_PASSWORD: postgres
+    volumes:
+      - grafana_data:/var/lib/grafana
+
 volumes:
   data:
   postgres_data:
+  grafana_data:
