@@ -4,7 +4,8 @@
 CREATE TABLE IF NOT EXISTS dht22 (
 id SERIAL PRIMARY KEY,
 timestamp TIMESTAMP NOT NULL,
-payload TEXT NOT NULL
+temperature REAL NOT NULL,
+humidity REAL NOT NULL
 );
 
 GRANT SELECT ON dht22 TO postgres;
