@@ -13,6 +13,7 @@ const char* mqtt_server = "";
 const char* mqtt_user = "";
 const char* mqtt_password = "";
 const char* topic = "sensors/dht22/measurements";
+const unsigned long millisInMinutes = 300000; // 5 minutes
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -31,13 +32,17 @@ void setup() {
 }
 
 void loop() {
-  float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature();
-  if (isnan(humidity) || isnan(temperature)) {
-    // Do nothing for now...
-    return;
+  static unsigned long lastMessage = 0;
+
+  if(millis() - lastMessage > millisInMinutes) {
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature();
+    if (isnan(humidity) || isnan(temperature)) {
+      // Do nothing for now...
+      return;
+    }
+    String dht22Measurements = String(humidity) + "," + String(temperature);
+    client.publish(topic, dht22Measurements.c_str());
+    //delay(3000);
   }
-  String dht22Measurements = String(humidity) + "," + String(temperature);
-  client.publish(topic, dht22Measurements.c_str());
-  delay(3000);
 }
