@@ -25,9 +25,16 @@ conn = psycopg2.connect(
 def on_message(client, userdata, message):
     payload = message.payload.decode('utf-8')
     timestamp = datetime.now()
+    temperature, humidity = payload.split(',')
+    try:
+        float(temperature)
+        float(humidity)
+    except ValueError:
+        temperature = 0
+        humidity = 0
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO dht22 (timestamp, payload) VALUES (%s, %s)',
+        'INSERT INTO dht22 (timestamp, temperature, humidity) VALUES (%s, %s)',
         (timestamp, payload)
     )
     conn.commit()
