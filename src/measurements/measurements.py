@@ -34,8 +34,8 @@ def on_message(client, userdata, message):
         humidity = 0
     cursor = conn.cursor()
     cursor.execute(
-        'INSERT INTO dht22 (timestamp, temperature, humidity) VALUES (%s, %s)',
-        (timestamp, payload)
+        'INSERT INTO dht22 (timestamp, temperature, humidity) VALUES (%s, %s, %s)',
+        (timestamp, temperature, humidity)
     )
     conn.commit()
 
