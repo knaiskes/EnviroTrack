@@ -6,7 +6,7 @@ MQTT_BROKER_ADDRESS = 'mqtt'
 MQTT_BROKER_PORT = 1883
 MQTT_USERNAME = 'test'
 MQTT_PASSWORD = 'test'
-MQTT_TOPIC = 'sensor/dht22/measurements'
+MQTT_TOPIC = 'sensors/dht22/measurements'
 
 POSTGRES_HOST = 'db'
 POSTGRES_PORT = 5432
