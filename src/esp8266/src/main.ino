@@ -12,37 +12,52 @@ const char* password = "";
 const char* mqtt_server = "";
 const char* mqtt_user = "";
 const char* mqtt_password = "";
+const int mqtt_port = 1883;
 const char* topic = "sensors/dht22/measurements";
 const unsigned long millisInMinutes = 300000; // 5 minutes
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void setup() {
-  dht.begin();
+void reconnectWiFi() {
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
   }
+}
 
-  client.setServer(mqtt_server, 1883);
-  while (!client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
-    delay(1000);
+void reconnectMQTT() {
+  while (!client.connected()) {
+    if (client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
+    } else {
+      delay(5000);
+    }
   }
 }
 
-void loop() {
-  static unsigned long lastMessage = 0;
+void setup() {
+  dht.begin();
+  reconnectWiFi();
+  client.setServer(mqtt_server, mqtt_port);
+}
 
-  if(millis() - lastMessage > millisInMinutes) {
+void loop() {
+  if (!client.connected()) {
+    reconnectMQTT();
+  }
+  client.loop();
+
+  static unsigned long lastMsg = 0;
+  if (millis() - lastMsg > millisInMinutes) {
     float humidity = dht.readHumidity();
     float temperature = dht.readTemperature();
     if (isnan(humidity) || isnan(temperature)) {
       // Do nothing for now...
       return;
     }
-    String dht22Measurements = String(humidity) + "," + String(temperature);
+
+    lastMsg = millis();
+    String dht22Measurements = String(temperature) + "," + String(humidity);
     client.publish(topic, dht22Measurements.c_str());
-    //delay(3000);
   }
 }
