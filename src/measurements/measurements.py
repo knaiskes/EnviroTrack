@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 from datetime import datetime
+import zoneinfo
 import psycopg2
 
 MQTT_BROKER_ADDRESS = 'mqtt'
@@ -14,6 +15,8 @@ POSTGRES_DBNAME = 'measurements'
 POSTGRES_USERNAME = 'postgres'
 POSTGRES_PASSWORD = 'postgres'
 
+TIMEZONE = zoneinfo.ZoneInfo('Europe/Athens')
+
 conn = psycopg2.connect(
     host=POSTGRES_HOST,
     port=POSTGRES_PORT,
@@ -24,7 +27,7 @@ conn = psycopg2.connect(
 
 def on_message(client, userdata, message):
     payload = message.payload.decode('utf-8')
-    timestamp = datetime.now()
+    timestamp = datetime.now(TIMEZONE)
     temperature, humidity = payload.split(',')
     try:
         float(temperature)
