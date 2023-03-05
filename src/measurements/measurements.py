@@ -27,7 +27,7 @@ conn = psycopg2.connect(
 
 def on_message(client, userdata, message):
     payload = message.payload.decode('utf-8')
-    timestamp = datetime.now(TIMEZONE)
+    timestamp = datetime.now(TIMEZONE).replace(microsecond=0)
     temperature, humidity = payload.split(',')
     try:
         float(temperature)
