@@ -14,6 +14,8 @@ services:
       - data:/mosquitto/data/
     depends_on:
       - db
+    networks:
+      - Enviro-network
 
   db:
     container_name: db
@@ -29,6 +31,8 @@ services:
       - TZ=Europe/Athens
     ports:
       - "5432:5432"
+    networks:
+      - Enviro-network
 
   script:
     build:
@@ -38,6 +42,8 @@ services:
     depends_on:
       - mqtt
       - db
+    networks:
+      - Enviro-network
 
   grafana:
     image: grafana/grafana
@@ -55,8 +61,14 @@ services:
       GF_DATABASE_PASSWORD: postgres
     volumes:
       - grafana_data:/var/lib/grafana
+    networks:
+      - Enviro-network
 
 volumes:
   data:
   postgres_data:
   grafana_data:
+
+networks:
+  Enviro-network:
+    driver: bridge
