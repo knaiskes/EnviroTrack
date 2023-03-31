@@ -49,3 +49,8 @@ username: admin
 password: admin
 ```
 ![Grafana](https://user-images.githubusercontent.com/6069054/225743346-ec44cd6a-d8c7-45fb-9dfb-ba22313adaf0.png)
+
+# Related Projects
+
+- [EnviroApi](https://github.com/knaiskes/EnviroApi) : An API to retrieve
+  temperature and humidity measurements
